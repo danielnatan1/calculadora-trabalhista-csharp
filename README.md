@@ -12,8 +12,7 @@ O sistema diferencia automaticamente as regras para **Pedido de Demissão**, **D
 
 ## 📸 Preview
 
-![Tela de Resultado](https://via.placeholder.com/800x400?text=Substitua+por+um+Print+do+Resultado)
-*(Exemplo de cálculo rescisório detalhado)*
+![Preview do Sistema](img/resultado.png)
 
 ---
 
