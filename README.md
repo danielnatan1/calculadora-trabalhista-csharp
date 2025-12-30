@@ -8,6 +8,32 @@ Aplicação web desenvolvida em **ASP.NET Core MVC** para realização de cálcu
 
 O sistema diferencia automaticamente as regras para **Pedido de Demissão**, **Dispensa Sem Justa Causa** e **Justa Causa**, aplicando as normas vigentes da CLT (Consolidação das Leis do Trabalho).
 
+
+---
+
+## 🎓 Guia para Iniciantes: Como Baixar e Rodar
+
+Se você está começando agora e quer testar este projeto no seu computador, siga este passo a passo detalhado:
+
+### 1. Baixando as Ferramentas (Grátis)
+Você vai precisar do **Visual Studio Community**, que é o programa oficial da Microsoft para editar códigos em C#.
+
+1.  Acesse o site oficial: [Download Visual Studio](https://visualstudio.microsoft.com/pt-br/vs/community/)
+2.  Baixe a versão **Community 2022** (é gratuita).
+3.  **Importante na Instalação:** Quando o instalador abrir, ele vai pedir para você marcar o que deseja instalar. Marque a caixinha:
+    * ✅ **Desenvolvimento para ASP.NET e web**
+4.  Clique em instalar e aguarde (pode demorar um pouquinho).
+
+### 2. Abrindo o Projeto
+1.  Nesta página do GitHub, clique no botão verde **<> Code** e depois em **Download ZIP**.
+2.  Extraia (descompacte) a pasta no seu computador.
+3.  Abra a pasta e procure um arquivo com extensão **.sln** (Solução) ou clique com o botão direito na pasta vazia e escolha "Abrir com Visual Studio".
+
+### 3. Rodando a Calculadora
+1.  Com o Visual Studio aberto, procure na parte de cima um botão verde com o símbolo de "Play" (▶) escrito **CalculadoraTrabalhista** ou **http**.
+2.  Clique nele! O Visual Studio vai preparar tudo e abrirá o navegador automaticamente com a calculadora funcionando.
+
+
 ---
 
 ## 📸 Preview
