@@ -1,0 +1,123 @@
+:root {
+    --primary-color: #0f172a; /* Azul Noite */
+    --accent-color: #3b82f6;   /* Azul Vibrante */
+    --success-color: #10b981;  /* Verde Dinheiro */
+    --bg-color: #f1f5f9;       /* Cinza muito claro */
+    --card-bg: #ffffff;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #334155;
+}
+
+/* Container principal centralizado */
+.main-wrapper {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Cards (Caixas brancas) */
+.glass-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Título */
+.header-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+.header-title h1 {
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+.header-title span {
+    color: var(--accent-color);
+}
+
+/* Formulário */
+.form-group {
+    margin-bottom: 20px;
+}
+.form-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: #475569;
+}
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+.form-control:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Botões */
+.btn-action {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    color: white;
+}
+.btn-calc {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+}
+.btn-pdf {
+    background: linear-gradient(135deg, #059669, var(--success-color));
+    margin-top: 15px;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+/* Área de Resultados */
+.result-box {
+    background-color: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 30px;
+    border-left: 5px solid var(--success-color);
+    animation: slideUp 0.5s ease-out;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+.result-total {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--success-color);
+    margin-top: 15px;
+    border-top: 2px dashed #cbd5e1;
+    padding-top: 15px;
+}
+
+/* Animação */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

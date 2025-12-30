@@ -1,0 +1,189 @@
+﻿@model calculotrabalista.ViewModels.DadosTrabalhistaVM
+
+<div class="main-wrapper">
+    <div class="header-title">
+        <h1><i class="fa-solid fa-calculator"></i> Calculadora <span>Trabalhista</span></h1>
+        <p>Cálculo exato de rescisão, rápido e seguro.</p>
+    </div>
+
+    <div class="glass-card">
+        <form asp-action="Calcular" method="post" id="formCalculo">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="mb-4"><i class="fa-solid fa-user-pen"></i> Dados do Contrato</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Data de Admissão</label>
+                        <input asp-for="DataAdmissao" class="form-control" type="date" />
+                        <span asp-validation-for="DataAdmissao" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Data de Demissão</label>
+                        <input asp-for="DataDemissao" class="form-control" type="date" />
+                        <span asp-validation-for="DataDemissao" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Último Salário Bruto</label>
+                        <input asp-for="SalarioBrutoTexto" class="form-control" 
+                               id="inputSalario" placeholder="R$ 0,00" onkeyup="formatarMoeda(this)" />
+                        <span asp-validation-for="SalarioBrutoTexto" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Motivo da Saída</label>
+                        <select asp-for="MotivoDemissao" class="form-control" id="motivoSelect" onchange="atualizarInterface()">
+                            <option value="SemJustaCausa">Demissão sem Justa Causa</option>
+                            <option value="PedidoDemissao">Pedido de Demissão</option>
+                            <option value="JustaCausa">Demissão por Justa Causa</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3 p-3 bg-white rounded border" id="boxAviso">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" asp-for="CumpriuAvisoPrevio" id="checkAviso">
+                            <label class="form-check-label fw-bold" for="checkAviso" id="labelAviso">
+                                Cumpriu o Aviso Prévio?
+                            </label>
+                        </div>
+                        <small class="text-muted d-block mt-1" id="helpAviso">
+                            Marque se trabalhou os 30 dias.
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn-action btn-calc mt-3">
+                        <i class="fa-solid fa-calculator"></i> Calcular Agora
+                    </button>
+                </div>
+
+                <div class="col-md-6">
+                    @if (Model.CalculoRealizado) 
+                    {
+                        <div class="result-box">
+                            <h4 class="mb-3"><i class="fa-solid fa-receipt"></i> Resultado</h4>
+                            
+                            <div class="result-row">
+                                <span>Saldo de Salário</span>
+                                <strong>@Model.SaldoSalario.ToString("C")</strong>
+                            </div>
+                            <div class="result-row">
+                                <span>Aviso Prévio <br><small class="text-muted" style="font-size:0.75rem">@Model.AvisoPrevioDescricao</small></span>
+                                <strong>@Model.AvisoPrevioValor.ToString("C")</strong>
+                            </div>
+                            <div class="result-row">
+                                <span>Férias + 1/3</span>
+                                <strong>@((Model.FeriasProporcionais + Model.TercoFerias + Model.FeriasVencidas).ToString("C"))</strong>
+                            </div>
+                            <div class="result-row">
+                                <span>13º Salário</span>
+                                <strong>@Model.DecimoTerceiro.ToString("C")</strong>
+                            </div>
+                            
+                            <div class="result-row text-danger">
+                                <span>Descontos (INSS/IR)</span>
+                                <strong>- @((Model.DescontoINSS + Model.DescontoIRRF).ToString("C"))</strong>
+                            </div>
+
+                            @if(Model.DescontoAvisoPrevio > 0)
+                            {
+                                <div class="result-row text-danger fw-bold bg-danger-subtle p-2 rounded mb-2">
+                                    <span>Desconto Aviso Prévio</span>
+                                    <strong>- @Model.DescontoAvisoPrevio.ToString("C")</strong>
+                                </div>
+                            }
+
+                            <div class="result-row">
+                                <span>FGTS + Multa (Depósito)</span>
+                                <small>@((Model.FGTS_Saldo + Model.FGTS_Multa).ToString("C"))</small>
+                            </div>
+                            <div class="text-end mb-3">
+                                <small class="text-muted" style="font-size: 0.7rem;">* O valor do FGTS fica na conta vinculada (não soma no líquido).</small>
+                            </div>
+
+                            <div class="result-row result-total">
+                                <span>LÍQUIDO A RECEBER:</span>
+                                <span>@Model.TotalLiquido.ToString("C")</span>
+                            </div>
+
+                            <button type="submit" asp-action="BaixarPdf" class="btn-action btn-pdf">
+                                <i class="fa-solid fa-file-pdf"></i> Baixar PDF Detalhado
+                            </button>
+
+                            <hr class="my-4">
+
+                            <div class="text-center">
+                                <h5 class="mb-3 text-muted"><i class="fa-solid fa-heart text-danger"></i> Apoie o projeto</h5>
+                                <input type="text" value="@Model.PayloadPix" id="pixCopiaCola" style="position:absolute; left:-9999px;" />
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-outline-primary" onclick="copiarPix()">
+                                        <i class="fa-regular fa-copy"></i> Copiar Código Pix
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center justify-content-center h-100 text-muted text-center p-4">
+                            <div>
+                                <i class="fa-solid fa-arrow-left fa-3x mb-3"></i>
+                                <p>Preencha os dados e clique em Calcular.</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function formatarMoeda(elemento) {
+        let valor = elemento.value.replace(/\D/g, "");
+        valor = (valor / 100).toFixed(2) + "";
+        valor = valor.replace(".", ",");
+        valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+        elemento.value = "R$ " + valor;
+    }
+
+    function copiarPix() {
+        var codigoPix = document.getElementById("pixCopiaCola");
+        codigoPix.select();
+        codigoPix.setSelectionRange(0, 99999); 
+        navigator.clipboard.writeText(codigoPix.value);
+        alert("Código Pix copiado!");
+    }
+
+    // LÓGICA VISUAL DO AVISO PRÉVIO
+    function atualizarInterface() {
+        var motivo = document.getElementById("motivoSelect").value;
+        var boxAviso = document.getElementById("boxAviso");
+        var labelAviso = document.getElementById("labelAviso");
+        var helpAviso = document.getElementById("helpAviso");
+        var checkAviso = document.getElementById("checkAviso");
+
+        if (motivo === "JustaCausa") {
+            // Justa Causa: Esconde a opção
+            boxAviso.style.display = "none";
+            checkAviso.checked = false; 
+        } 
+        else if (motivo === "PedidoDemissao") {
+            // Pedido: Alerta sobre o desconto
+            boxAviso.style.display = "block";
+            labelAviso.innerHTML = "Cumpriu o aviso (trabalhou)?";
+            helpAviso.innerHTML = "<span class='text-danger'>Atenção:</span> Se não marcar, haverá <strong>desconto</strong> de 1 salário.";
+        } 
+        else {
+            // Sem Justa Causa: Trabalhado vs Indenizado
+            boxAviso.style.display = "block";
+            labelAviso.innerHTML = "Aviso Prévio Trabalhado?";
+            helpAviso.innerHTML = "Desmarque se o aviso for <strong>Indenizado</strong> (empresa pagou para sair hoje).";
+        }
+    }
+
+    // Garante que roda ao carregar a página
+    document.addEventListener("DOMContentLoaded", function() {
+        atualizarInterface();
+    });
+</script>
